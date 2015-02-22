@@ -42,7 +42,7 @@ ADD .hhconfig /srv/web/.hhconfig
 RUN sudo /usr/share/hhvm/install_fastcgi.sh
 
 # Clean up APT when done.
-RUN apt-get upgrade -y && apt-get -y clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get -y clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # expose port 80
 EXPOSE 80
