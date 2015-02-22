@@ -3,15 +3,10 @@
 # to `latest`! See
 # https://github.com/phusion/baseimage-docker/blob/master/Changelog.md
 # for a list of version numbers.
-FROM phusion/baseimage:0.9.13
+FROM phusion/baseimage:0.9.16
 
 # Set correct environment variables.
 ENV HOME /root
-
-# Regenerate SSH host keys. baseimage-docker does not contain any, so you
-# have to do that yourself. You may also comment out this instruction; the
-# init system will auto-generate one during boot.
-RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
@@ -20,14 +15,11 @@ CMD ["/sbin/my_init"]
 RUN sudo apt-get update
 RUN sudo apt-get install -y software-properties-common python-software-properties
 
-# we'll need wget to fetch the key...
-RUN sudo apt-get install -y wget
-
-# install hhvm
-RUN wget -O - http://dl.hhvm.com/conf/hhvm.gpg.key | sudo apt-key add -
-RUN echo deb http://dl.hhvm.com/ubuntu trusty main | sudo tee /etc/apt/sources.list.d/hhvm.list
+# install hhvm (stable)
+RUN sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0x5a16e7281be7a449
+RUN sudo add-apt-repository 'deb http://dl.hhvm.com/ubuntu trusty main'
 RUN sudo apt-get update
-RUN sudo apt-get install -y hhvm-nightly
+RUN sudo apt-get install -y hhvm
 
 # install nginx
 RUN sudo apt-get install -y nginx
@@ -43,14 +35,14 @@ ADD hhvm.sh /etc/service/hhvm/run
 ADD nginx-default /etc/nginx/sites-available/default
 
 # create a directory with a sample index.hh file
-RUN sudo mkdir -p /mnt/hhvm
-ADD index.hh /mnt/hhvm/index.hh
-ADD .hhconfig /mnt/hhvm/.hhconfig
+RUN sudo mkdir -p /srv/web
+ADD index.hh /srv/web/index.hh
+ADD .hhconfig /srv/web/.hhconfig
 
 RUN sudo /usr/share/hhvm/install_fastcgi.sh
 
 # Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get upgrade -y && apt-get -y clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # expose port 80
 EXPOSE 80
