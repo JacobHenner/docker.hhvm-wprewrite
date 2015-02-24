@@ -23,7 +23,7 @@ RUN sudo apt-get install -y hhvm
 
 # install nginx
 RUN sudo apt-get install -y nginx
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+ADD nginx.conf /etc/nginx/nginx.conf #Replace with more suitable configuration.
 
 RUN mkdir /etc/service/nginx
 ADD nginx.sh /etc/service/nginx/run

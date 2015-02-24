@@ -9,6 +9,10 @@ server {
         server_name localhost;
         include hhvm.conf;
 
+        location ~* .(jpg|jpeg|png|gif|ico|css|js)$ {
+        expires 365d; #Static Media Caching
+        }
+
         location / {
                 # First attempt to serve request as file, then
                 # as directory, then fall back to index.html
@@ -17,10 +21,4 @@ server {
                 # include /etc/nginx/naxsi.rules
         }
 
-        location /doc/ {
-                alias /usr/share/doc/;
-                autoindex on;
-                allow 127.0.0.1;
-                deny all;
-        }
 }
