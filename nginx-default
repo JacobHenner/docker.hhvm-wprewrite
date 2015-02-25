@@ -15,10 +15,8 @@ server {
 
         location / {
                 # First attempt to serve request as file, then
-                # as directory, then fall back to index.html
+                # as directory, then forward to wordpress.
                 try_files $uri $uri/ /index.php?$args;
-                # Uncomment to enable naxsi on this location
-                # include /etc/nginx/naxsi.rules
         }
 
 }

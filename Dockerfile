@@ -10,6 +10,7 @@ ENV HOME /root
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
+VOLUME ["/srv/web"]
 
 # install add-apt-repository
 RUN sudo apt-get update
@@ -23,7 +24,7 @@ RUN sudo apt-get install -y hhvm
 
 # install nginx
 RUN sudo apt-get install -y nginx
-ADD nginx.conf /etc/nginx/nginx.conf #Replace with more suitable configuration.
+ADD nginx.conf /etc/nginx/
 
 RUN mkdir /etc/service/nginx
 ADD nginx.sh /etc/service/nginx/run

@@ -16,3 +16,5 @@ nginx is pointed to `/srv/web` which is by default set up to serve the example i
     # docker run -t -p 80 -v /path/to/the/host/machine/directory:/mnt/hhvm:ro hhvm
 
 Now simply put your .hh (or .php) files to /path/to/the/host/machine/directory on the host machine and enjoy Hacking. :)
+
+Note: Image assumes that nginx will be behind a reverse proxy for production. This image does not currently keep nginx logs.
